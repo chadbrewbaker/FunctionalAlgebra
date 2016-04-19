@@ -1,0 +1,144 @@
+\documentclass{beamer}
+
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\usepackage{listings}
+\lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small}}{}
+
+\title{Functional Algebra}
+\author{Chad Brewbaker}
+\date{May 5, 2016}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section[Outline]{}
+\frame{\tableofcontents}
+
+\section{Introduction}
+\subsection{Overview of the Beamer Class}
+
+\begin{frame}[fragile]
+Sum
+$$ A + B $$
+\begin{code} 
+data X = A | B
+f :: X -> Either A B
+\end{code}
+
+\end{frame}
+
+
+ 
+ 
+
+
+
+
+\begin{frame}[fragile]
+Product
+$$ A \times B$$
+\begin{code}
+data X = X A B
+f :: X -> (A, B)
+\end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Exponential
+$$ B^{A} $$
+\begin{code}
+f :: A -> B
+\end{code}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Constants are functions with no arguments
+$$a = a^{1} $$
+\begin{code}
+f ::  A
+f' :: () -> A
+\end{code}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+Derivative
+$$ {d \over dx}(ax^{n}) = a \times n \times x^{n-1}$$
+\begin{code}
+data N = M | 1
+f ::  (a, N -> x)
+f' :: (a, N, M -> X)
+\end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Curry
+$$ (a^{m})^{n} = a^{mn}$$
+
+\begin{code}
+curry :: n -> m -> a
+curry' :: (n,m) -> a
+
+\end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Co-curry
+$$ a^{m}b^{m} = (ab)^{m}$$
+
+\begin{code}
+f :: (m -> a, m -> b)
+f' :: m -> (a,b)
+\end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Domain Splitting
+$$a^{m}a^{n} = a^{m+n}$$
+\begin{code}
+data B = M | N
+f :: (M -> a, N -> a)
+f' :: B -> a
+\end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Function Domain Shrinking
+$$ a^{m} \div a^{n} = a^{m-n}$$
+\begin{code}
+data M = B | N
+f :: (M -> a) remove (N -> a)
+f' :: B -> a
+\end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Function Co-domain Shrinking
+$$ a^{m} \div b^{m} = ({a \over b})^{m}$$
+\begin{code}
+data A = N | B
+f :: (m -> A) remove (m -> B)
+f' :: m -> N
+\end{code}
+\end{frame}
+
+
+
+
+
+\frame
+{
+  \frametitle{Features of the Beamer Class}
+
+  \begin{itemize}
+  \item<1-> Normal LaTeX class.
+  \item<2-> Easy overlays.
+  \item<3-> No external programs needed.      
+  \end{itemize}
+}
+\end{document}
