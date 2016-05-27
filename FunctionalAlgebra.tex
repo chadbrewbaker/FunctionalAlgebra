@@ -3,12 +3,17 @@
 % \usepackage{beamerthemesplit} // Activate for custom appearance
 
 \usepackage{listings}
+\usepackage{xcolor}
 \lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small}}{}
 \lstnewenvironment{ccode}{\lstset{language=C,basicstyle=\small}}{}
+\usepackage{minted}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\lstnewenvironment{rcode}{\lstset{language=Ruby,basicstyle=\small}}{}
 
-\title{Programming with Jr. High Algebra}
-\author{Chad Brewbaker}
-\date{May 5, 2016}
+\title{Functional Algebra for Middle School Students}
+\author{Chad Brewbaker\\ DataCulture LLC}
+\date{May 27, 2016}
 
 \begin{document}
 
@@ -20,7 +25,7 @@
 %
 
 \begin{frame}[fragile]
-How can we get programming in the Jr. High curriculum?\newline
+How can we get functional programming into universal education?\newline
 \newline
 What language did we use before COBOL and ALGOL?\newline
 \newline
@@ -46,20 +51,32 @@ How can we prove our code is correct?\newline
 \begin{frame}[fragile]
 1) Ignore fancy terminology.\newline\newline
 2) Use sums, products, and exponents.\newline\newline
-3) Teach Jr. High Algebra instructors just enough Haskell.  
+3) Teach Jr. High Algebra instructors just enough about type signatures.  
 \end{frame}
 
 
 \begin{frame}[fragile]
 The Haskell language\newline\newline
-Advised by Simon Peyton Jones of Microsoft Research.\newline\newline
 Looks like Algebra. \newline\newline
-Easy to test. No rando database calls in a function without IO warning.
+Easy to reason about. No rando database calls in a function without IO warning.\newline\newline
+Maximum flexibility for abstract design.
 \end{frame}
 
+\begin{frame}[fragile]
+The Ruby language\newline\newline
+Lots of existing projects for kids.\newline\newline
+Play-dough on top of C.\newline\newline
+Maximum flexibility for human tinkering.
+\end{frame}
 
 \begin{frame}[fragile]
-Function notation: Algebra, Haskell, C\#\newline\newline
+The C language\newline\newline
+Loosely typed machine instructions.\newline\newline
+Maximum flexibility for machines.
+\end{frame}
+
+\begin{frame}[fragile]
+Function notation: Algebra, Haskell, C, Ruby\newline\newline
 
 $f(\mathbb{Z},\mathbb{Z}) \rightarrow$ String
 \begin{code} 
@@ -72,22 +89,49 @@ String f(int a, int b);
 
 
 \begin{frame}[fragile]
+Longform functions in Ruby
+\begin{rcode}
+def f(a,b)
+  #function body
+end 
+\end{rcode}
+
+Short form functions in Ruby
+\begin{rcode}
+f = ->(a,b){
+   #function body
+}
+\end{rcode}
+\end{frame}
+
+
+\begin{frame}[fragile]
 Sum: $A$ or $B$\newline\newline
 $$A + B $$
+
 \begin{code} 
 data X = A | B
-f :: X -> Either A B
 \end{code}
-
-\begin{ccode} 
-enum X { A, B }; //C
-\end{ccode}
 
 Sally's drink is either Coffee or Tea.
 \begin{code}
 type Drink = Coffee | Tea
 \end{code}
+\end{frame}
 
+\begin{frame}[fragile]
+Sum: $A$ or $B$\newline\newline
+$$A + B $$
+
+C has enumeration types
+\begin{ccode} 
+enum X { A, B };
+\end{ccode}
+
+Ruby has enumerable types
+\begin{rcode} 
+x = Set.new [a,b]
+\end{rcode}
 
 \end{frame}
 
@@ -95,18 +139,48 @@ type Drink = Coffee | Tea
 \begin{frame}[fragile]
 Product: $A$ and $B$\newline\newline
 $$A \times B$$
+
+Haskell has product types, also known as tuples
 \begin{code}
 type X = (A,B)
 \end{code}
-
-\begin{ccode}
-struct X{ A a; B b;}; //C
-\end{ccode}
 
 Sally's dinner consists of a fruit and a vegetable.
 \begin{code}
 type Dinner =  (Fruit, Vegetable)
 \end{code}
+\end{frame}
+
+\begin{frame}[fragile]
+Product: $A$ and $B$\newline\newline
+$$A \times B$$
+\newline\newline
+C has structs.\newline\newline
+\begin{ccode}
+struct X{ A a; B b;};
+\end{ccode}
+
+\end{frame}
+
+\begin{frame}[fragile]
+Product: $A$ and $B$\newline\newline
+$$A \times B$$
+
+\newline\newline
+Ruby has Array types.
+\begin{rcode}
+x = [a,b]
+\end{rcode}
+\newline\newline 
+Ruby classes can be used as product types.
+\begin{rcode}
+class Product
+  @a = A.new()
+  @b = B.new() 
+end
+x = Product.new()
+\end{rcode}
+
 \end{frame}
 
 
@@ -118,10 +192,6 @@ $A$ is called the domain or input type. $B$ is called co-domain or return type.
 f :: A -> B
 \end{code}
 
-\begin{ccode}
-B f( A  a); //C
-\end{ccode}
-
 Sally chops a carrot.
 \begin{code}
 chop :: Carrot -> DicedCarrot
@@ -129,75 +199,79 @@ chop :: Carrot -> DicedCarrot
 
 \end{frame}
 
-\begin{frame}[fragile]
-Exponential: $B^{A} $\newline\newline
 
-Example from JEG's RailsConf2016 talk
-\begin{ccode}
-Integer fib(Integer a){
-    if (a == 0 || a == 1) 
-        return 1;
-   return fib(a-1) + fib(a-2);
-}
-\end{ccode}
+%\begin{frame}[fragile]
+%Exponential: $B^{A} $\newline\newline
+%
+%Example from JEG's RailsConf2016 talk
+%\begin{ccode}
+%Integer fib(Integer a){
+%   if (a == 0 || a == 1) 
+%        return 1;
+%   return fib(a-1) + fib(a-2);
+%}
+%\end{ccode}
 
-What is the runtime of fib(n)?
-\end{frame}
-
-
-\begin{frame}[fragile]
-Exponential: $ B^{A} $\newline\newline
-
-Focus on this line
-\begin{ccode}
-      return fib(a-1) + fib(a-2);
-\end{ccode}
-
-How many branches? Bool\newline
-How deep is each branch? $\approx A$ 
-\begin{code}
-fibExecutionUnit :: A -> Bool
-\end{code}
-         $$O(2^{A})$$
-\end{frame}
+%What is the runtime of fib(n)?
+%\end{frame}
 
 
+%\begin{frame}[fragile]
+%Exponential: $ B^{A} $\newline\newline
 
+%Focus on this line
+%\begin{ccode}
+%      return fib(a-1) + fib(a-2);
+%\end{ccode}
+
+%How many branches? Bool\newline
+%How deep is each branch? $\approx A$ 
+%\begin{code}
+%fibExecutionUnit :: A -> Bool
+%\end{code}
+%         $$O(2^{A})$$
+%\end{frame}
 
 
 \begin{frame}[fragile]
 Terminology for simple values.\newline\newline
-$\sqrt{-1}$ Undefined 
+$\sqrt{-1}$ Undefined (Irrational)
 \begin{ccode}
 0 Void
-1 Unit
+1 Unit, also ()
 2 Bool 
 3 Tri
 4 Quad
 \end{ccode}
 \end{frame}
 
-
-
 \begin{frame}[fragile]
 Constants are functions with the Unit as an argument.
-$$a = a^{1} $$
+$$\textcolor{red}{a} = a^{1} $$
+\color{red}
 \begin{code}
-f ::  A
-f' :: () -> A
+foo ::  A
+\end{code}
+\color{black}
+\begin{code}
+bar :: () -> A
 \end{code}
 \end{frame}
 
 
 \begin{frame}[fragile]
 Tuples vs tuple lookups\\
-$$a \times a = a^2$$
+$$\textcolor{red}{a \times a} = a^2$$
 
-
+\color{red}
 \begin{code}
-f :: (A,A)
-f':: Bool -> A  -- Choose the left or right A
+foo :: (A,A)
 \end{code}
+\color{black}
+\begin{code}
+bar:: Bool -> A
+\end{code}
+Interpret $bar$ as choice between left A and right A.
 
 \end{frame}
 
@@ -232,94 +306,189 @@ f':: Bool -> A  -- Choose the left or right A
 
 \begin{frame}[fragile]
 Void behaves like zero
-$$1= a^{0}$$
+$$\textcolor{red}{1}= a^{0}$$
+\color{red}
 \begin{code}
-f :: Unit
-f':: Void -> A
+foo :: Unit
 \end{code}
-$$a\times0 = 0$$
+\color{black}
 \begin{code}
-g :: (A,Void)
-g':: Void
+bar:: Void -> A
 \end{code}
-$$a+0 = a$$
+$$\textcolor{red}{a\times0} = 0$$
+\color{red}
 \begin{code}
-h :: A | Void
-h':: A
+foo :: (A,Void)
+\end{code}
+\color{black}
+\begin{code}
+bar:: Void
+\end{code}
+
+\end{frame}
+
+\begin{frame}[fragile]
+Void behaves like zero
+
+$$\textcolor{red}{a+0} = a$$
+\color{red}
+\begin{code}
+foo :: A | Void
+\end{code}
+\color{black}
+\begin{code}
+bar:: A
 \end{code}
 \end{frame}
+
+
 
 
 \begin{frame}[fragile]
 Derivative(N) is removing one element from N
-$$ {d \over dx}(ax^{n}) = a \times n \times x^{n-1}$$
+$$ \textcolor{red}{{d \over dx}(ax^{n}) }= a \times n \times x^{n-1}$$
 \begin{code}
 data N = M | 1
-f ::  (a, N -> x)
-f' :: (a, N, M -> X)
 \end{code}
-($a$, which element we took out of N, the new function)
+\color{red}
+\begin{code}
+foo::  derivitaveN( a, N -> x)
+\end{code}
+\color{black}
+\begin{code}
+bar:: (a, N, M -> X)
+\end{code}
 \end{frame}
 
 \begin{frame}[fragile]
 Curry. We can pass argument lists or chain functions.
-$$ (a^{m})^{n} = a^{mn}$$
+$$ \textcolor{red}{(a^{m})^{n}} = a^{mn}$$
 
+\color{red}
 \begin{code}
-curry :: n -> (m -> a)
-curry' :: (n,m) -> a
+curryFoo :: n -> (m -> a)
+\end{code}
+\color{black}
+\begin{code}
+curryBar :: (n,m) -> a
 \end{code}
 \end{frame}
+
+\begin{frame}[fragile]
+\inputminted{Ruby}{curry.rb}
+
+
+\inputminted{text}{curry.out}
+\end{frame}
+
+
 
 \begin{frame}[fragile]
 Co-curry. Multiple function calls or return a tuple.
-$$ a^{m}b^{m} = (ab)^{m}$$
+$$ \textcolor{red}{a^{m}b^{m}} = (ab)^{m}$$
 
+\color{red}
 \begin{code}
-f :: (m -> a, m -> b)
-f' :: m -> (a,b)
+cocurryFoo :: (m -> a, m -> b)
+\end{code}
+\color{black}
+\begin{code}
+cocurryBar :: m -> (a,b)
 \end{code}
 \end{frame}
+
+\begin{frame}[fragile]
+\inputminted{Ruby}{cocurry.rb}
+
+
+\inputminted{text}{cocurry.out}
+\end{frame}
+
 
 \begin{frame}[fragile]
 Splitting function inputs
-$$a^{m}a^{n} = a^{m+n}$$
+$$\textcolor{red}{a^{m}a^{n} }= a^{m+n}$$
 \begin{code}
 data B = M | N
-f :: (M -> a, N -> a)
-f' :: B -> a
+\end{code}
+\color{red}
+\begin{code}
+foo :: (M -> a, N -> a)
+\end{code}
+\color{black}
+\begin{code}
+bar :: B -> a
 \end{code}
 \end{frame}
+
+\begin{frame}[fragile]
+\inputminted{Ruby}{inputSplit.rb}
+
+
+\inputminted{text}{inputSplit.out}
+\end{frame}
+
 
 \begin{frame}[fragile]
 Ignoring some input or shrinking function input 
-$$ a^{m} \div a^{n} = a^{m-n}$$
+$$\textcolor{red}{ a^{m} \div a^{n}} = a^{m-n}$$
 \begin{code}
 data M = B | N
+\end{code}
+\color{red}
+\begin{code}
 f :: (M -> a) remove (N -> a)
+\end{code}
+\color{black}
+\begin{code}
 f' :: B -> a
 \end{code}
 \end{frame}
 
 \begin{frame}[fragile]
+\inputminted{Ruby}{ignoreInput.rb}
+
+
+\inputminted{text}{ignoreInput.out}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
 Suppressing some outputs or shrinking the output type
-$$ a^{m} \div b^{m} = ({a \over b})^{m}$$
+$$ \textcolor{red}{a^{m} \div b^{m} }= ({a \over b})^{m}$$
 \begin{code}
 data A = N | B
+\end{code}
+\color{red}
+\begin{code}
 f :: (m -> A) remove (m -> B)
+\end{code}
+\color{black}
+\begin{code}
 f':: m -> N
 \end{code}
 \end{frame}
+
+%\begin{frame}[fragile]
+%\inputminted{Ruby}{ignoreOutput.rb}
+
+%\inputminted{text}{ignoreOutput.out}
+%\end{frame}
 
 
 \begin{frame}[fragile]
 Fermat's Little Theorem\\
 $ a^{n} - a$ is divisible by $n$ when $n$ is prime.
 $$ a^{n} - a = n\times k$$
-$$ a^{n} = n\times k + a$$
+$$ \textcolor{red}{a^{n} }= n\times k + a$$
+\color{red}
 \begin{code}
-f :: N -> A
-f':: (N, K) | A
+foo :: N -> A
+\end{code}
+\color{black}
+\begin{code}
+bar :: (N, K) | A
 \end{code}
 This refactoring exists whenever $N$ is a prime size set.
 \end{frame}
@@ -327,13 +496,16 @@ This refactoring exists whenever $N$ is a prime size set.
 \begin{frame}[fragile]
 Fermat's Last Theorem\\
 
-$ x^{n} + y^{n} = z^{n} $ has no solutions for $n>2$.\newline
-
+$ \textcolor{red}{x^{n} + y^{n} }= z^{n} $ has no solutions for $n>2$.\newline
+\color{red}
 \begin{code}
-f :: (N -> X) | (N -> Y)
-f':: (N ->Z)
+foo :: (N -> X) | (N -> Y)
 \end{code}
-This refactoring never exists when $N$ is greater than size two.
+\color{black}
+\begin{code}
+bar :: (N ->Z)
+\end{code}
+foo $\neq$  bar when $N$ is greater than size two.
 \end{frame}
 
 
@@ -341,33 +513,87 @@ This refactoring never exists when $N$ is greater than size two.
 Binomial Theorem.  \\ Refactor between product of sums and sum of products.
 $$(a+b)^{n} = \sum_{k=0}^{n}{n \choose k} a^{n-k}b^{k}$$
 
-$$(a+b)^{2} = a^{2} + 2ab + b^{2}$$
+$$\textcolor{red}{(a+b)^{2}} = a^{2} + 2ab + b^{2}$$
+\color{red}
 \begin{code}
-f :: Bool -> (A | B)
-f' :: Bool -> A
+foo :: Bool -> (A | B)
+\end{code}
+\color{black}
+\begin{code}
+bar :: Bool -> A
       | (Bool, A, B)
       | Bool -> B 
-f'':: (A,A) | ((A,B) | (B,A)) | (B,B)
- 
-      
+baz :: (A,A) | ((A,B) | (B,A)) | (B,B)
+     
 \end{code}
 \end{frame}
 
-\begin{frame}[fragile]
-Binomial Theorem\\
-$(a+b)^{3} = a^{3} + 3a^{2}b + 3ab^{2} + b^{3}$
+%\begin{frame}[fragile]
+%Binomial Theorem\\
+%$(a+b)^{3} = a^{3} + 3a^{2}b + 3ab^{2} + b^{3}$
 
-\begin{code}
-f :: Tri -> (A | B)
-f' ::  Tri -> A  
-       | (Tri, Bool -> A, B)  
-       | (Tri, A, Bool -> B)
-       | Tri -> B
-f'' :: (A,A,A) 
-       | ( (A,A,B) | (A,B,A) | (B,A,A) )
-       | ( (A,B,B) | (A,B,B) | (B,A,B) )
-       | (B,B,B)
-\end{code}
+%\begin{code}
+%f :: Tri -> (A | B)
+%f' ::  Tri -> A  
+%       | (Tri, Bool -> A, B)  
+%       | (Tri, A, Bool -> B)
+%       | Tri -> B
+%f'' :: (A,A,A) 
+%       | ( (A,A,B) | (A,B,A) | (B,A,A) )
+%       | ( (A,B,B) | (A,B,B) | (B,A,B) )
+%       | (B,B,B)
+%\end{code}
+
+%\end{frame}
+
+\begin{frame}[fragile]
+Tips on how to read Algebra as a programmer.
+\end{frame}
+
+\begin{frame}[fragile]
+All the functions from $N$ to $N$.
+$${N^{N}}$$
+\end{frame}
+
+\begin{frame}[fragile]
+All reorderings of $N$.
+$$n! = n*(n-1)*...*2*1$$
+\end{frame}
+
+
+\begin{frame}[fragile]
+Let's ignore some stuff that is type X.
+$${1\over x}$$
+\end{frame}
+
+\begin{frame}[fragile]
+Let's ignore reordering.
+$${1\over n!}$$
+\end{frame}
+
+\begin{frame}[fragile]
+I'm about to give a stream of things.
+$$\sum$$
+\end{frame}
+
+\begin{frame}[fragile]
+I've got an arbitrarily large tuple.
+$$\prod$$
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+Moving forward.\newline\newline
+Teach Jr. High Algebra teachers basic type signatures.\newline\newline
+Functions are exponents. More practice problems on towers of exponents.\newline\newline 
+``Abstract" algebra can be obtuse. Be descriptive with concrete examples. Less jargon.\newline\newline
+My research project Endoscope. Inspect function structure. Don't rely on intuition.
+\end{frame}
+
+
+\begin{frame}[fragile]
+BONUS SLIDES
 
 \end{frame}
 
@@ -393,53 +619,6 @@ data SixTree A = (Void,Void -> a)  | (Unit,Unit -> A)
    | (OneThrityTwo, Hex -> A) 
 \end{code}
 \end{frame}
-
-\begin{frame}[fragile]
-Tips on how to read Algebra as a programmer.
-\end{frame}
-
-\begin{frame}[fragile]
-All the functions from $N$ to $N$.
-$${N^{N}}$$
-\end{frame}
-
-\begin{frame}[fragile]
-All reorderings of $N$.
-$$n! = n*(n-1)*...*2*1$$
-\end{frame}
-
-
-\begin{frame}[fragile]
-Let's ignore some stuff.
-$${1\over x}$$
-\end{frame}
-
-\begin{frame}[fragile]
-Let's remove one element from $x$ in $x \rightarrow y.$
-$$f^{'}(x)$$
-Let's remove two elements from $x$ in $x \rightarrow y.$
-$$f^{''}(x)$$
-\end{frame}
-
-
-
-\begin{frame}[fragile]
-Let's ignore reordering.
-$${1\over n!}$$
-\end{frame}
-
-
-\begin{frame}[fragile]
-I'm about to give a stream of things.
-$$\sum$$
-\end{frame}
-
-
-\begin{frame}[fragile]
-I've got an arbitrarily large tuple.
-$$\prod$$
-\end{frame}
-
 
 \begin{frame}[fragile]
 Monads are foreign because we aren't used to Algebra with towers of exponents. $m$ is usually a container or operating system call.\newline\newline
@@ -472,24 +651,6 @@ sayExePath = SE.getExecutablePath
 \end{code}
 
 
-\end{frame}
-
-\begin{frame}[fragile]
-Can we automate how we write code?\newline
-I give the compiler two data types A and B.\newline 
-The compiler searches for functions from A to B that typecheck.\newline
-I give the compiler unit test hints so it avoids silly code paths.\newline
-The compiler gives me hints on where it is getting stuck.\newline\newline
-This tool is the Microsoft LEAN project.
-\end{frame}
-
-\begin{frame}[fragile]
-My take on the future of automated programming.\newline\newline
-Jr. High Algebra is a good language. LEAN jumped the shark.\newline\newline
-We have free symbolic Alegebra packages like SymPy.\newline\newline
-Where SymPy fails we have Microsoft's Z3 solver.\newline\newline
-10x humans ask questions and give advice. Calculations are for computers.\newline\newline
-Stay tuned for talk later this month ``Z3 and me".
 \end{frame}
 
 
